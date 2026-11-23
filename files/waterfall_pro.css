@@ -1,0 +1,310 @@
+/* ===================================================================
+   DNX Wasserfall-Pegel – SDR#/Airspy-Stil (ohne Zoom)
+   Schmale Spalte am Rand: Contrast (nur Farbe) -> Range -> Offset.
+   =================================================================== */
+
+.dnx-wfpro {
+    /* Groesse wird zur Laufzeit gesetzt (--rail-h, Breite, Hoehe) */
+    --rail-h: 88px;
+
+    position: fixed;
+    right: 0;
+    top: 104px;
+    z-index: 1400;
+
+    width: 74px;
+    min-width: 60px;
+    min-height: 210px;
+    padding: 5px 0 6px 0;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+
+    background: linear-gradient(to bottom,
+                rgba(10, 13, 17, 0.86),
+                rgba(6, 8, 11, 0.92));
+    border-left: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.35);
+    border-radius: 4px 0 0 4px;
+
+    font-family: "Open Sans", Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.18;
+    color: #ffffff;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ---------- Kopfzeile ---------- */
+.dnx-wfpro-head {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    width: 100%;
+    padding-bottom: 4px;
+    margin-bottom: 2px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dnx-wfpro-title {
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    text-transform: uppercase;
+    cursor: move;
+}
+
+.dnx-wfpro-toggle {
+    background: none;
+    border: none;
+    padding: 0 0 0 1px;
+    color: #ffffff;
+    font-size: 10px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.dnx-wfpro-toggle:hover {
+    color: #ffffff;
+}
+
+/* ---------- eine Regeleinheit ---------- */
+.dnx-wfpro-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 2px 0 0 0;
+}
+
+.dnx-wfpro-cap {
+    font-size: 11px;
+    letter-spacing: 0.01em;
+    color: #ffffff;
+    padding-bottom: 3px;
+    white-space: nowrap;
+}
+
+.dnx-wfpro-num {
+    font-family: "Consolas", "DejaVu Sans Mono", monospace;
+    font-size: 11px;
+    color: #ffffff;
+    padding-top: 3px;
+    white-space: nowrap;
+}
+
+/* ---------- Schiene + gedrehter Regler ---------- */
+.dnx-wfpro-rail {
+    position: relative;
+    width: 100%;
+    height: var(--rail-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* duenne Grundlinie wie bei SDR# / Airspy */
+.dnx-wfpro-rail::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    margin-left: -1px;
+    border-radius: 1px;
+    background: #3c444c;
+}
+
+.dnx-wfpro-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    width: var(--rail-h);
+    height: 18px;
+    margin: 0;
+    padding: 0;
+
+    transform: translate(-50%, -50%) rotate(-90deg);
+    touch-action: none;
+    background: transparent;
+    cursor: ns-resize;
+    outline: none;
+}
+
+/* WebKit / Blink */
+.dnx-wfpro-slider::-webkit-slider-runnable-track {
+    height: 2px;
+    background: #3c444c;
+    border-radius: 1px;
+}
+
+.dnx-wfpro-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 11px;
+    height: 11px;
+    margin-top: -4.5px;
+    border: none;
+    border-radius: 50%;
+    background: #22b8f0;
+    box-shadow: 0 0 5px rgba(34, 184, 240, 0.85),
+                0 0 1px rgba(255, 255, 255, 0.9);
+    cursor: ns-resize;
+}
+
+.dnx-wfpro-slider:hover::-webkit-slider-thumb {
+    background: #4fcaf7;
+    box-shadow: 0 0 9px rgba(79, 202, 247, 0.95);
+}
+
+/* Firefox */
+.dnx-wfpro-slider::-moz-range-track {
+    height: 2px;
+    background: #3c444c;
+    border-radius: 1px;
+}
+
+.dnx-wfpro-slider::-moz-range-thumb {
+    width: 11px;
+    height: 11px;
+    border: none;
+    border-radius: 50%;
+    background: #22b8f0;
+    box-shadow: 0 0 5px rgba(34, 184, 240, 0.85);
+    cursor: ns-resize;
+}
+
+/* ---------- Trenner, Zusatzzeile, Knoepfe ---------- */
+.dnx-wfpro-sep {
+    width: 60%;
+    height: 1px;
+    margin: 5px 0 0 0;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.dnx-wfpro-lvls {
+    font-family: "Consolas", "DejaVu Sans Mono", monospace;
+    font-size: 9px;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    text-align: center;
+    padding-top: 5px;
+    white-space: nowrap;
+}
+
+.dnx-wfpro-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding-top: 5px;
+    width: 100%;
+    justify-content: center;
+}
+
+#dnx-wfpro-auto {
+    width: 34px;
+    font-variant: small-caps;
+}
+
+#dnx-wfpro-spek {
+    width: 68px;
+    height: 17px;
+    margin-top: 2px;
+    font-size: 9px;
+    letter-spacing: -0.02em;
+}
+
+.dnx-wfpro-btns button {
+    width: 16px;
+    height: 18px;
+    min-width: 16px;
+    padding: 0;
+    font-size: 10px;
+    line-height: 1;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.dnx-wfpro-btns button:hover {
+    color: #ffffff;
+    background: rgba(34, 184, 240, 0.25);
+    border-color: rgba(34, 184, 240, 0.55);
+}
+
+/* ---------- eingeklappt ---------- */
+.dnx-wfpro-collapsed {
+    width: 26px;
+    padding-bottom: 4px;
+}
+
+.dnx-wfpro-collapsed .dnx-wfpro-node,
+.dnx-wfpro-collapsed .dnx-wfpro-sep,
+.dnx-wfpro-collapsed .dnx-wfpro-lvls,
+.dnx-wfpro-collapsed .dnx-wfpro-btns {
+    display: none;
+}
+
+.dnx-wfpro-collapsed .dnx-wfpro-title {
+    writing-mode: vertical-rl;
+    padding-top: 3px;
+    font-size: 9px;
+}
+
+.dnx-wfpro-collapsed .dnx-wfpro-head {
+    flex-direction: column;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* schmale Bildschirme: etwas kompakter */
+@media (max-width: 900px) {
+    .dnx-wfpro { width: 68px; }
+}
+
+
+/* ---------- Groesse ziehen: 4 Seiten + 4 Ecken ---------- */
+.dnx-wfpro-rs {
+    position: absolute;
+    z-index: 5;
+    background: transparent;
+    touch-action: none;
+}
+
+/* Seiten */
+.dnx-wfpro-rs-n { left: 8px;  right: 8px; top: -3px;    height: 9px; cursor: ns-resize; }
+.dnx-wfpro-rs-s { left: 8px;  right: 8px; bottom: -3px; height: 9px; cursor: ns-resize; }
+.dnx-wfpro-rs-w { top: 8px;   bottom: 8px; left: -3px;  width: 9px;  cursor: ew-resize; }
+.dnx-wfpro-rs-e { top: 8px;   bottom: 8px; right: -3px; width: 9px;  cursor: ew-resize; }
+
+/* Ecken */
+.dnx-wfpro-rs-nw { top: -3px;    left: -3px;  width: 13px; height: 13px; cursor: nwse-resize; }
+.dnx-wfpro-rs-ne { top: -3px;    right: -3px; width: 13px; height: 13px; cursor: nesw-resize; }
+.dnx-wfpro-rs-sw { bottom: -3px; left: -3px;  width: 13px; height: 13px; cursor: nesw-resize; }
+.dnx-wfpro-rs-se { bottom: -3px; right: -3px; width: 13px; height: 13px; cursor: nwse-resize; }
+
+/* sichtbarer Griff unten rechts */
+.dnx-wfpro-rs-se::after {
+    content: "";
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid rgba(255, 255, 255, 0.22);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.22);
+}
+
+.dnx-wfpro-rs-se:hover::after {
+    border-color: rgba(34, 184, 240, 0.9);
+}
